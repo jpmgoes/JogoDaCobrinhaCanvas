@@ -98,7 +98,6 @@ function criarCobra() {
   //! Utilizar essa lógica para criação dos obstáculos/maças !!!!
   const posAleatoria = Math.random() * C_LARGURA - TAMANHO_PONTO;
   const a = posAleatoria - (posAleatoria % TAMANHO_PONTO);
-  //! Utilizar essa lógica para criação dos obstáculos/maças !!!!
 
   for (var z = 0; z < pontos; z++) {
     cobraX[z] = a - z * TAMANHO_PONTO;
@@ -162,11 +161,13 @@ function macaDpsDeComerTd() {
   if (verificarQntdeMaca()) noJogo = false;
 }
 
-function aoColidirComObj() {
+function aoColidirComObj(index) {
   vida--;
   console.log(vida);
 
   obstaculoAudio.play();
+
+  obstaculo_x[index] = macaInv;
 
   if (vida === 0) {
     vida = 0;
