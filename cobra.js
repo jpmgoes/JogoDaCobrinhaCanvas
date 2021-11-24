@@ -39,8 +39,9 @@ let countComidasPraVida = 0;
 const rangeDeErro = 10;
 
 // start game config
-let paraEsquerda = false;
-let paraDireita = true;
+let randomStart = Math.round(Math.random() * 2) % 2;
+let paraEsquerda = randomStart ? 1 : 0;
+let paraDireita = randomStart ? 0 : 1;
 let paraCima = false;
 let paraBaixo = false;
 let noJogo = true;
@@ -48,11 +49,18 @@ let noJogo = true;
 // tela config
 let tela;
 let ctx;
+let ATRASO = 140;
+
+let bodyWidth = document.querySelector(".bodyClass").offsetWidth;
+if (bodyWidth < 900) {
+}
 const TAMANHO_PONTO = 30;
 const ALEATORIO_MAXIMO = 25;
-let ATRASO = 140;
-const C_ALTURA = 800;
-const C_LARGURA = 800;
+const C_ALTURA = 900;
+const C_LARGURA = 900;
+
+// console.log(document.querySelector(".bodyClass").offsetHeight);
+// console.log();
 
 // move
 const TECLA_ESQUERDA = 37;
@@ -81,7 +89,7 @@ function iniciar() {
   carregarAudio();
   setTimeout(() => {
     bgm.play();
-    bgm.autoplay = true;
+    bgm.loop = true;
     criarCobra();
     addNoJogo(obstaculo_x, obstaculo_y, obstaculoQnt, null, maca_x);
     addNoJogo(maca_x, maca_y, macaQnt, macaInv, obstaculo_x);
@@ -133,7 +141,12 @@ function addNoJogo(arrX, arrY, qnt, invisivel, ...arrColision) {
     arrY = arrY.map(() => null);
   }
   for (let i = 0; i < qnt; i++) {
-    while (!arrX[i] || !arrY[i] || arrY[i] === cobraY[0]) {
+    while (
+      !arrX[i] ||
+      !arrY[i] ||
+      arrY[i] === cobraY[0] ||
+      arrX[i] === cobraX[0]
+    ) {
       // se já tiver sido comida, verificar se já foi spawnado
       while (true) {
         // evitar mesma posicao
@@ -313,7 +326,7 @@ function fimDeJogo() {
     if (!verificarQntdeMaca()) {
       ctx.fillText("DEU MOLE 😭😭💀💀", C_LARGURA / 2, C_ALTURA / 2);
       gameOver.play();
-      addPlayer();
+      // addPlayer();
       return;
     }
     wins.play();
@@ -323,7 +336,7 @@ function fimDeJogo() {
       C_ALTURA / 2 - 35
     );
     ctx.fillText("BRABO!!🥵🥵🥵", C_LARGURA / 2, C_ALTURA / 2 + 35);
-    addPlayer();
+    // addPlayer();
   });
 }
 
