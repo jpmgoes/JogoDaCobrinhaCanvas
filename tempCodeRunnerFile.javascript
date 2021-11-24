@@ -1,0 +1,1 @@
+console.log(600*Math.random()*30)
