@@ -1,10 +1,3 @@
-// Jogo da Cobra (Snake Game)
-// Autor: Jan Bodnar
-// Adaptado por: Gilson Pereira
-// Código fonte original: http://zetcode.com/javascript/snake/
-
-// Declaração de variáveis e constantes
-
 let tela;
 let ctx;
 
@@ -68,10 +61,12 @@ function iniciar() {
 
   carregarImagens();
   carregarAudio();
-  addNoJogo(obstaculo_x, obstaculo_y, obstaculoQnt, null, maca_x);
-  addNoJogo(maca_x, maca_y, macaQnt, macaInv, obstaculo_x);
 
-  setTimeout(() => criarCobra(), ATRASO);
+  setTimeout(() => {
+    criarCobra();
+    addNoJogo(obstaculo_x, obstaculo_y, obstaculoQnt, null, maca_x);
+    addNoJogo(maca_x, maca_y, macaQnt, macaInv, obstaculo_x);
+  }, ATRASO);
 
   setTimeout("cicloDeJogo()", ATRASO);
 }
@@ -115,7 +110,7 @@ function addNoJogo(arrX, arrY, qnt, invisivel, ...arrColision) {
     arrY = arrY.map(() => null);
   }
   for (let i = 0; i < qnt; i++) {
-    while (!arrX[i] || !arrY[i]) {
+    while (!arrX[i] || !arrY[i] || arrY[i] === cobraY[0]) {
       // se já tiver sido comida, verificar se já foi spawnado
       while (true) {
         // evitar mesma posicao
@@ -146,12 +141,13 @@ function cicloDeJogo() {
 }
 
 function aoComerMaca(index) {
+  macaAudio.pause();
+  macaAudio.play();
   pontos++;
   maca_x[index] = macaInv;
   maca_y[index] = macaInv;
   ATRASO -= 2;
   countComidasPraVida++;
-  // macaAudio.play()
 
   if (countComidasPraVida === 3) {
     countComidasPraVida = 0;
@@ -161,18 +157,14 @@ function aoComerMaca(index) {
 }
 
 function macaDpsDeComerTd() {
-  if (verificarQntdeMaca()) {
-    let [a, b] = addNoJogo(maca_x, maca_y, macaQnt, macaInv, obstaculo_x);
-    maca_x = a;
-    maca_y = b;
-  }
+  if (verificarQntdeMaca()) noJogo = false;
 }
 
 function aoColidirComObj() {
   vida--;
   console.log(vida);
 
-  window.onload = obstaculoAudio.play;
+  obstaculoAudio.play();
 
   if (vida === 0) {
     vida = 0;
@@ -218,7 +210,7 @@ function verificarColisao() {
   if (cobraX[0] < 0) ajustarPosicaoDaCobra(C_LARGURA, cobraY[0]);
 
   objColision(obstaculo_x, obstaculo_y, obstaculoQnt, aoColidirComObj);
-  objColision(maca_x, maca_y, macaQnt, aoComerMaca);
+  objColision(maca_x, maca_y, macaQnt, aoComerMaca, macaDpsDeComerTd);
 }
 
 function mover() {
@@ -257,8 +249,20 @@ function fimDeJogo() {
   ctx.fillStyle = "white";
   ctx.textBaseline = "middle";
   ctx.textAlign = "center";
-  ctx.font = "normal bold 18px serif";
-  ctx.fillText("Fim de Jogo", C_LARGURA / 2, C_ALTURA / 2);
+  ctx.font = "normal bold 64px serif";
+
+  if (!verificarQntdeMaca()) {
+    ctx.fillText("Deu mole 😭😭💀💀", C_LARGURA / 2, C_ALTURA / 2);
+    return;
+  }
+
+  ctx.fillText(
+    `${pontos - 3} ponto${pontos > 1 ? "s" : ""}???😳😳😳`,
+    C_LARGURA / 2,
+    C_ALTURA / 2 - 35
+  );
+
+  ctx.fillText("tu é o brabo!!🥵🥵🥵", C_LARGURA / 2, C_ALTURA / 2 + 35);
 }
 
 function verificarTecla(e) {
