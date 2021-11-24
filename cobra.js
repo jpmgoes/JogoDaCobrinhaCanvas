@@ -95,8 +95,10 @@ function carregarImagens() {
 function criarCobra() {
   pontos = 3;
 
+  //! Utilizar essa lógica para criação dos obstáculos/maças !!!!
   const posAleatoria = Math.random() * C_LARGURA - TAMANHO_PONTO;
   const a = posAleatoria - (posAleatoria % TAMANHO_PONTO);
+  //! Utilizar essa lógica para criação dos obstáculos/maças !!!!
 
   for (var z = 0; z < pontos; z++) {
     cobraX[z] = a - z * TAMANHO_PONTO;
