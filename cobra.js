@@ -1,7 +1,7 @@
 // cronometro
 let countCronometro = {
   min: 0,
-  sec: 10,
+  sec: 2,
 };
 // img
 let cabeca;
