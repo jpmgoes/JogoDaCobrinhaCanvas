@@ -1,3 +1,8 @@
+// cronometro
+let countCronometro = {
+  min: 0,
+  sec: 10,
+};
 // img
 let cabeca;
 let maca;
@@ -32,7 +37,7 @@ let vida = 5;
 //alimento
 let maca_x = [];
 let maca_y = [];
-const macaQnt = 0;
+const macaQnt = 15;
 const macaInv = -100;
 let countComidasPraVida = 0;
 
@@ -78,12 +83,14 @@ function iniciar() {
 
   carregarImagens();
   carregarAudio();
+  cronometroScreen();
+
   setTimeout(() => {
-    bgm.play();
-    bgm.loop = true;
+    // bgm.play();
+    // bgm.loop = true;
     criarCobra();
-    addNoJogo(obstaculo_x, obstaculo_y, obstaculoQnt, null, maca_x);
-    addNoJogo(maca_x, maca_y, macaQnt, macaInv, obstaculo_x);
+    addNoJogo(obstaculo_x, obstaculo_y, obstaculoQnt, maca_x);
+    addNoJogo(maca_x, maca_y, macaQnt, obstaculo_x);
   }, ATRASO);
 
   setTimeout("cicloDeJogo()", ATRASO);
@@ -126,18 +133,9 @@ function criarCobra() {
   }
 }
 
-function addNoJogo(arrX, arrY, qnt, invisivel, ...arrColision) {
-  if (!!arrX.find((a) => a === invisivel)) {
-    arrX = arrX.map(() => null);
-    arrY = arrY.map(() => null);
-  }
+function addNoJogo(arrX, arrY, qnt, ...arrColision) {
   for (let i = 0; i < qnt; i++) {
-    while (
-      !arrX[i] ||
-      !arrY[i] ||
-      arrY[i] === cobraY[0] ||
-      arrX[i] === cobraX[0]
-    ) {
+    while (!arrX[i] || arrY[i] === cobraY[0]) {
       // se já tiver sido comida, verificar se já foi spawnado
       while (true) {
         // evitar mesma posicao
@@ -168,7 +166,6 @@ function cicloDeJogo() {
 }
 
 function aoComerMaca(index) {
-  macaAudio.pause();
   macaAudio.play();
   pontos++;
   maca_x[index] = macaInv;
@@ -189,12 +186,8 @@ function macaDpsDeComerTd() {
 
 function aoColidirComObj(index) {
   vida--;
-  console.log(vida);
-
   obstaculoAudio.play();
-
   obstaculo_x[index] = macaInv;
-
   if (vida === 0) {
     vida = 0;
     noJogo = false;
@@ -314,19 +307,21 @@ function fimDeJogo() {
     ctx.textBaseline = "middle";
     ctx.textAlign = "center";
     ctx.font = `normal bold 32px PressStart2P`;
+
     bgm.pause();
+
     if (!verificarQntdeMaca()) {
-      ctx.fillText("DEU MOLE 😭😭💀💀", C_LARGURA / 2, C_ALTURA / 2);
+      ctx.fillText("DEU MOLE 😭😭💀💀", C_LARGURA / 2, C_ALTURA / 2 - 132);
       gameOver.play();
-      setInterval(showPlayers, 7600);
+      setInterval(showPlayers, 3800);
       return;
     }
     ctx.fillText(
       `${pontos - 3} PONTOS???😳😳😳`,
-      C_LARGURA / 2 - 32,
-      C_ALTURA / 2 - 196
+      C_LARGURA / 2,
+      C_ALTURA / 2 - 164
     );
-    ctx.fillText("BRABO!!🥵🥵🥵", C_LARGURA / 2 - 32, C_ALTURA / 2 - 132);
+    ctx.fillText("BRABO!!🥵🥵🥵", C_LARGURA / 2, C_ALTURA / 2 - 100);
 
     wins.play();
     setInterval(showPlayers, 7600);
@@ -338,7 +333,7 @@ function fimDeJogo() {
         setTimeout(() => {
           ctx.fillText(
             `${players.nome[i]} ${players.ponto[i]}`,
-            C_LARGURA / 2 - 32,
+            C_LARGURA / 2,
             C_ALTURA / 2 + countAltura
           );
           countAltura += 40;
@@ -374,5 +369,31 @@ function verificarTecla(e) {
     paraBaixo = true;
     paraDireita = false;
     paraEsquerda = false;
+  }
+}
+
+function cronometroScreen() {
+  let element = document.querySelector(".cronometro");
+  let countFn = setInterval(() => {
+    cronometro();
+    element.textContent = `${countCronometro.min
+      .toString()
+      .padStart(2, "0")}:${countCronometro.sec.toString().padStart(2, "0")}`;
+  }, 1000);
+
+  function cronometro() {
+    countCronometro.sec--;
+    if (countCronometro.sec < 0) {
+      countCronometro.sec = 60;
+      if (countCronometro.min <= 0) {
+        noJogo = false;
+        ctx.clearRect(0, 0, C_LARGURA, C_ALTURA);
+        ctx.fillRect(0, 0, C_LARGURA, C_ALTURA);
+        fimDeJogo();
+        countCronometro.min = 0;
+        countCronometro.sec = 0;
+        clearInterval(countFn);
+      } else countCronometro.min--;
+    }
   }
 }
