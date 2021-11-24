@@ -1,8 +1,3 @@
-let tela;
-let ctx;
-
-let vida = 5;
-
 // img
 let cabeca;
 let maca;
@@ -13,41 +8,59 @@ let obstaculo = Array(2).fill(null);
 let macaAudio;
 let obstaculoAudio;
 let bgm;
-bgm = new Audio("./audio/Sweden.mp3");
-window.addEventListener("mousemove", () => {
-  bgm.play();
-});
+let gameOver;
+let wins;
 
+// obstaculo config
 const obstaculoQnt = 10;
 const obstaculo_x = [];
 const obstaculo_y = [];
 
+// localStorage
+let players = localStorage.getItem("players")
+  ? JSON.parse(localStorage.getItem("players"))
+  : {
+      nome: [],
+      ponto: [],
+    };
+if (!localStorage.getItem("players"))
+  localStorage.setItem("players", JSON.stringify(players));
+
 let pontos;
+let vida = 5;
+
+//alimento
 let maca_x = [];
 let maca_y = [];
-const macaQnt = 15;
+const macaQnt = 2;
 const macaInv = -100;
 let countComidasPraVida = 0;
 
 const rangeDeErro = 10;
 
+// start game config
 let paraEsquerda = false;
 let paraDireita = true;
 let paraCima = false;
 let paraBaixo = false;
 let noJogo = true;
 
+// tela config
+let tela;
+let ctx;
 const TAMANHO_PONTO = 30;
 const ALEATORIO_MAXIMO = 25;
 let ATRASO = 140;
 const C_ALTURA = 800;
 const C_LARGURA = 800;
 
+// move
 const TECLA_ESQUERDA = 37;
 const TECLA_DIREITA = 39;
 const TECLA_ACIMA = 38;
 const TECLA_ABAIXO = 40;
 
+// cobra config
 const cobraX = [];
 const cobraY = [];
 
@@ -67,6 +80,8 @@ function iniciar() {
   carregarImagens();
   carregarAudio();
   setTimeout(() => {
+    bgm.play();
+    bgm.autoplay = true;
     criarCobra();
     addNoJogo(obstaculo_x, obstaculo_y, obstaculoQnt, null, maca_x);
     addNoJogo(maca_x, maca_y, macaQnt, macaInv, obstaculo_x);
@@ -78,6 +93,9 @@ function iniciar() {
 function carregarAudio() {
   obstaculoAudio = new Audio("./audio/Roblox Death Sound.mp3");
   macaAudio = new Audio("./audio/marioMoeda.mp3");
+  bgm = new Audio("./audio/Sweden.mp3");
+  gameOver = new Audio("./audio/gameOver.mp3");
+  wins = new Audio("./audio/marioWins.mp3");
 }
 
 function carregarImagens() {
@@ -252,29 +270,61 @@ function fazerDesenho() {
   } else fimDeJogo();
 }
 
+function addPlayer() {
+  let nome = prompt("Qual teu nome? bota só 3 letras ai 🙈🙈🙈").slice(0, 3);
+  players.nome.push(nome);
+  players.ponto.push(pontos - 3);
+  localStorage.setItem("players", JSON.stringify(sortBest5players(players)));
+}
+
+function sortBest5players() {
+  for (let i in players.ponto)
+    for (let j = +i + 1; j < players.ponto.length; j++) {
+      if (j >= players.ponto.length) break;
+      if (players.ponto[j] > players.ponto[i]) {
+        trocaTroca(players.ponto, i, j);
+        trocaTroca(players.nome, i, j);
+      }
+    }
+  return {
+    nome: players.nome.slice(0, 5),
+    ponto: players.ponto.slice(0, 5),
+  };
+}
+
+function trocaTroca(arr, indexI, indexJ) {
+  let aux = arr[indexJ];
+  arr[indexJ] = arr[indexI];
+  arr[indexI] = aux;
+}
+
 function fimDeJogo() {
-  ctx.fillStyle = "white";
-  ctx.textBaseline = "middle";
-  ctx.textAlign = "center";
-  ctx.font = "normal bold 64px serif";
-
-  if (!verificarQntdeMaca()) {
-    ctx.fillText("Deu mole 😭😭💀💀", C_LARGURA / 2, C_ALTURA / 2);
-
-    window.addEventListener("mousemove", () => {
-      bgm.stop();
-    });
-
-    return;
-  }
-
-  ctx.fillText(
-    `${pontos - 3} ponto${pontos}???😳😳😳`,
-    C_LARGURA / 2,
-    C_ALTURA / 2 - 35
+  let myFont = new FontFace(
+    "PressStart2P",
+    "url(http://fonts.gstatic.com/s/pressstart2p/v5/8Lg6LX8-ntOHUQnvQ0E7o3uGXJk6cuEylToZ-uuaubQ.ttf)"
   );
-
-  ctx.fillText("brabo!!🥵🥵🥵", C_LARGURA / 2, C_ALTURA / 2 + 35);
+  myFont.load().then((font) => {
+    document.fonts.add(font);
+    ctx.fillStyle = "white";
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "center";
+    ctx.font = `normal bold 32px PressStart2P`;
+    bgm.pause();
+    if (!verificarQntdeMaca()) {
+      ctx.fillText("DEU MOLE 😭😭💀💀", C_LARGURA / 2, C_ALTURA / 2);
+      gameOver.play();
+      addPlayer();
+      return;
+    }
+    wins.play();
+    ctx.fillText(
+      `${pontos - 3} PONTOS???😳😳😳`,
+      C_LARGURA / 2,
+      C_ALTURA / 2 - 35
+    );
+    ctx.fillText("BRABO!!🥵🥵🥵", C_LARGURA / 2, C_ALTURA / 2 + 35);
+    addPlayer();
+  });
 }
 
 function verificarTecla(e) {
