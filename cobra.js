@@ -13,6 +13,12 @@ let obstaculo = Array(2).fill(null);
 let macaAudio;
 let obstaculoAudio;
 
+let bgm;
+bgm = new Audio("./audio/Sweden.mp3");
+window.addEventListener("mousemove", () => {
+  bgm.play();
+});
+
 const obstaculoQnt = 10;
 const obstaculo_x = [];
 const obstaculo_y = [];
@@ -61,7 +67,6 @@ function iniciar() {
 
   carregarImagens();
   carregarAudio();
-
   setTimeout(() => {
     criarCobra();
     addNoJogo(obstaculo_x, obstaculo_y, obstaculoQnt, null, maca_x);
@@ -256,16 +261,21 @@ function fimDeJogo() {
 
   if (!verificarQntdeMaca()) {
     ctx.fillText("Deu mole 😭😭💀💀", C_LARGURA / 2, C_ALTURA / 2);
+
+    window.addEventListener("mousemove", () => {
+      bgm.stop();
+    });
+
     return;
   }
 
   ctx.fillText(
-    `${pontos - 3} ponto${pontos > 1 ? "s" : ""}???😳😳😳`,
+    `${pontos - 3} ponto${pontos}???😳😳😳`,
     C_LARGURA / 2,
     C_ALTURA / 2 - 35
   );
 
-  ctx.fillText("tu é o brabo!!🥵🥵🥵", C_LARGURA / 2, C_ALTURA / 2 + 35);
+  ctx.fillText("brabo!!🥵🥵🥵", C_LARGURA / 2, C_ALTURA / 2 + 35);
 }
 
 function verificarTecla(e) {
