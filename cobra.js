@@ -9,10 +9,9 @@ let maca;
 let bola;
 let obstaculo = Array(2).fill(null);
 
-// img
+// audio
 let macaAudio;
 let obstaculoAudio;
-
 let bgm;
 bgm = new Audio("./audio/Sweden.mp3");
 window.addEventListener("mousemove", () => {
