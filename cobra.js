@@ -32,11 +32,9 @@ let vida = 5;
 //alimento
 let maca_x = [];
 let maca_y = [];
-const macaQnt = 2;
+const macaQnt = 0;
 const macaInv = -100;
 let countComidasPraVida = 0;
-
-const rangeDeErro = 10;
 
 // start game config
 let randomStart = Math.round(Math.random() * 2) % 2;
@@ -49,18 +47,11 @@ let noJogo = true;
 // tela config
 let tela;
 let ctx;
-let ATRASO = 140;
-
-let bodyWidth = document.querySelector(".bodyClass").offsetWidth;
-if (bodyWidth < 900) {
-}
+let ATRASO = 120;
 const TAMANHO_PONTO = 30;
 const ALEATORIO_MAXIMO = 25;
 const C_ALTURA = 900;
-const C_LARGURA = 900;
-
-// console.log(document.querySelector(".bodyClass").offsetHeight);
-// console.log();
+const C_LARGURA = C_ALTURA;
 
 // move
 const TECLA_ESQUERDA = 37;
@@ -212,8 +203,7 @@ function aoColidirComObj(index) {
 
 function objColision(arrX, arrY, qnt, ...cb) {
   for (let i = 0; i < qnt; i++)
-    if (cobraX[0] == arrX[i] || cobraX[0] + rangeDeErro == arrX[i])
-      if (cobraY[0] == arrY[i] || cobraY[0] + rangeDeErro == arrY[i]) cb[0](i);
+    if (cobraX[0] == arrX[i] && cobraY[0] == arrY[i]) cb[0](i);
 
   cb = cb.slice(1);
   cb.forEach((fn) => fn());
@@ -332,11 +322,34 @@ function fimDeJogo() {
     wins.play();
     ctx.fillText(
       `${pontos - 3} PONTOS???😳😳😳`,
-      C_LARGURA / 2,
-      C_ALTURA / 2 - 35
+      C_LARGURA / 2 - 32,
+      C_ALTURA / 2 - 196
     );
-    ctx.fillText("BRABO!!🥵🥵🥵", C_LARGURA / 2, C_ALTURA / 2 + 35);
-    // addPlayer();
+    ctx.fillText("BRABO!!🥵🥵🥵", C_LARGURA / 2 - 32, C_ALTURA / 2 - 132);
+
+    setInterval(showPlayers, 7600);
+    function showPlayers() {
+      let countAltura = -64;
+      // ctx.fillText(
+      //   `${players.nome[0]} ${players.ponto[0]}`,
+      //   C_LARGURA / 2 - 32,
+      //   C_ALTURA / 2 + countAltura
+      // );
+
+      countAltura += 40;
+      let countTempo = 0;
+      for (let i = 0; i < players.nome.length; i++) {
+        setTimeout(() => {
+          ctx.fillText(
+            `${players.nome[i]} ${players.ponto[i]}`,
+            C_LARGURA / 2 - 32,
+            C_ALTURA / 2 + countAltura
+          );
+          countAltura += 40;
+        }, countTempo * i);
+        countTempo = 500;
+      }
+    }
   });
 }
 
