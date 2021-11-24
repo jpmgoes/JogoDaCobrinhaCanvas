@@ -277,7 +277,8 @@ function addPlayer() {
   let nome = prompt("Qual teu nome? bota só 3 letras ai 🙈🙈🙈").slice(0, 3);
   players.nome.push(nome);
   players.ponto.push(pontos - 3);
-  localStorage.setItem("players", JSON.stringify(sortBest5players(players)));
+  players = sortBest5players(players);
+  localStorage.setItem("players", JSON.stringify(players));
 }
 
 function sortBest5players() {
@@ -302,6 +303,7 @@ function trocaTroca(arr, indexI, indexJ) {
 }
 
 function fimDeJogo() {
+  addPlayer();
   let myFont = new FontFace(
     "PressStart2P",
     "url(http://fonts.gstatic.com/s/pressstart2p/v5/8Lg6LX8-ntOHUQnvQ0E7o3uGXJk6cuEylToZ-uuaubQ.ttf)"
@@ -316,10 +318,9 @@ function fimDeJogo() {
     if (!verificarQntdeMaca()) {
       ctx.fillText("DEU MOLE 😭😭💀💀", C_LARGURA / 2, C_ALTURA / 2);
       gameOver.play();
-      // addPlayer();
+      setInterval(showPlayers, 7600);
       return;
     }
-    wins.play();
     ctx.fillText(
       `${pontos - 3} PONTOS???😳😳😳`,
       C_LARGURA / 2 - 32,
@@ -327,15 +328,10 @@ function fimDeJogo() {
     );
     ctx.fillText("BRABO!!🥵🥵🥵", C_LARGURA / 2 - 32, C_ALTURA / 2 - 132);
 
+    wins.play();
     setInterval(showPlayers, 7600);
     function showPlayers() {
       let countAltura = -64;
-      // ctx.fillText(
-      //   `${players.nome[0]} ${players.ponto[0]}`,
-      //   C_LARGURA / 2 - 32,
-      //   C_ALTURA / 2 + countAltura
-      // );
-
       countAltura += 40;
       let countTempo = 0;
       for (let i = 0; i < players.nome.length; i++) {
