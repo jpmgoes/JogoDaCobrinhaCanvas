@@ -86,8 +86,8 @@ function iniciar() {
   cronometroScreen();
 
   setTimeout(() => {
-    // bgm.play();
-    // bgm.loop = true;
+    bgm.play();
+    bgm.loop = true;
     criarCobra();
     addNoJogo(obstaculo_x, obstaculo_y, obstaculoQnt, maca_x);
     addNoJogo(maca_x, maca_y, macaQnt, obstaculo_x);
@@ -123,7 +123,6 @@ function carregarImagens() {
 function criarCobra() {
   pontos = 3;
 
-  //! Utilizar essa lógica para criação dos obstáculos/maças !!!!
   const posAleatoria = Math.random() * C_LARGURA - TAMANHO_PONTO;
   const a = posAleatoria - (posAleatoria % TAMANHO_PONTO);
 
