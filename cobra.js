@@ -40,7 +40,7 @@ let vida = 5;
 //alimento
 let maca_x = [];
 let maca_y = [];
-const macaQnt = 4;
+const macaQnt = 15;
 const macaInv = -100;
 let countComidasPraVida = 0;
 
