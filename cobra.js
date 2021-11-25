@@ -1,8 +1,10 @@
 // cronometro
 let countCronometro = {
-  min: 0,
-  sec: 2,
+  min: 1,
+  sec: 20,
 };
+let minFormatado = countCronometro.min.toString().padStart(2, "0");
+let secFormatado = countCronometro.sec.toString().padStart(2, "0");
 // img
 let cabeca;
 let maca;
@@ -27,6 +29,7 @@ let players = localStorage.getItem("players")
   : {
       nome: [],
       ponto: [],
+      time: [],
     };
 if (!localStorage.getItem("players"))
   localStorage.setItem("players", JSON.stringify(players));
@@ -37,7 +40,7 @@ let vida = 5;
 //alimento
 let maca_x = [];
 let maca_y = [];
-const macaQnt = 15;
+const macaQnt = 4;
 const macaInv = -100;
 let countComidasPraVida = 0;
 
@@ -269,6 +272,7 @@ function addPlayer() {
   let nome = prompt("Qual teu nome? bota só 3 letras ai 🙈🙈🙈").slice(0, 3);
   players.nome.push(nome);
   players.ponto.push(pontos - 3);
+  players.time.push(`${minFormatado}:${secFormatado}`);
   players = sortBest5players(players);
   localStorage.setItem("players", JSON.stringify(players));
 }
@@ -280,11 +284,13 @@ function sortBest5players() {
       if (players.ponto[j] > players.ponto[i]) {
         trocaTroca(players.ponto, i, j);
         trocaTroca(players.nome, i, j);
+        trocaTroca(players.time, i, j);
       }
     }
   return {
     nome: players.nome.slice(0, 5),
     ponto: players.ponto.slice(0, 5),
+    time: players.time.slice(0, 5),
   };
 }
 
@@ -296,10 +302,16 @@ function trocaTroca(arr, indexI, indexJ) {
 
 function fimDeJogo() {
   addPlayer();
+  const centro = {
+    lado: C_LARGURA / 2,
+    altura: C_ALTURA / 2,
+  };
+
   let myFont = new FontFace(
     "PressStart2P",
     "url(http://fonts.gstatic.com/s/pressstart2p/v5/8Lg6LX8-ntOHUQnvQ0E7o3uGXJk6cuEylToZ-uuaubQ.ttf)"
   );
+
   myFont.load().then((font) => {
     document.fonts.add(font);
     ctx.fillStyle = "white";
@@ -310,33 +322,45 @@ function fimDeJogo() {
     bgm.pause();
 
     if (!verificarQntdeMaca()) {
-      ctx.fillText("DEU MOLE 😭😭💀💀", C_LARGURA / 2, C_ALTURA / 2 - 132);
+      ctx.fillText("DEU MOLE!! 😭😭💀💀", centro.lado, centro.altura - 132);
       gameOver.play();
       setInterval(showPlayers, 3800);
       return;
     }
+
     ctx.fillText(
       `${pontos - 3} PONTOS???😳😳😳`,
-      C_LARGURA / 2,
-      C_ALTURA / 2 - 164
+      centro.lado,
+      centro.altura - 164
     );
-    ctx.fillText("BRABO!!🥵🥵🥵", C_LARGURA / 2, C_ALTURA / 2 - 100);
-
+    ctx.fillText("BRABO!!🥵🥵🥵", centro.lado, centro.altura - 100);
     wins.play();
     setInterval(showPlayers, 7600);
+
     function showPlayers() {
-      let countAltura = -64;
-      countAltura += 40;
+      let countAltura = 64;
       let countTempo = 0;
-      for (let i = 0; i < players.nome.length; i++) {
+
+      ctx.fillText("NICK PT TIME", centro.lado, centro.altura + countAltura);
+
+      countAltura += 64;
+
+      for (let index in players.ponto) {
+        let numIndex = +index;
+        let posicao = +index + 1;
+
         setTimeout(() => {
+          let name = players.nome[numIndex].padStart(3, " ");
           ctx.fillText(
-            `${players.nome[i]} ${players.ponto[i]}`,
-            C_LARGURA / 2,
-            C_ALTURA / 2 + countAltura
+            `${posicao} ${name} ${players.ponto[numIndex]
+              .toString()
+              .padStart(2, "0")} ${players.time[numIndex]}`,
+            centro.lado,
+            centro.altura + countAltura
           );
           countAltura += 40;
-        }, countTempo * i);
+        }, countTempo * numIndex);
+
         countTempo = 500;
       }
     }
@@ -374,10 +398,15 @@ function verificarTecla(e) {
 function cronometroScreen() {
   let element = document.querySelector(".cronometro");
   let countFn = setInterval(() => {
-    cronometro();
-    element.textContent = `${countCronometro.min
-      .toString()
-      .padStart(2, "0")}:${countCronometro.sec.toString().padStart(2, "0")}`;
+    if (noJogo) {
+      cronometro();
+    } else {
+    }
+
+    minFormatado = countCronometro.min.toString().padStart(2, "0");
+    secFormatado = countCronometro.sec.toString().padStart(2, "0");
+
+    element.textContent = `${minFormatado}:${secFormatado}`;
   }, 1000);
 
   function cronometro() {
