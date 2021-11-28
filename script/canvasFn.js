@@ -143,7 +143,7 @@ function cronometroScreen() {
   function cronometro() {
     countCronometro.sec--;
     if (countCronometro.sec < 0) {
-      countCronometro.sec = 60;
+      countCronometro.sec = 59;
       if (countCronometro.min <= 0) {
         noJogo = false;
         ctx.clearRect(0, 0, C_LARGURA, C_ALTURA);
