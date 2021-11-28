@@ -1,7 +1,7 @@
 // cronometro
 let countCronometro = {
-  min: 0,
-  sec: 2,
+  min: 1,
+  sec: 20,
 };
 let minFormatado = countCronometro.min.toString().padStart(2, "0");
 let secFormatado = countCronometro.sec.toString().padStart(2, "0");
@@ -92,6 +92,7 @@ function iniciar() {
     bgm.play();
     bgm.loop = true;
     criarCobra();
+    htmlVidaChange();
     addNoJogo(obstaculo_x, obstaculo_y, obstaculoQnt, maca_x);
     addNoJogo(maca_x, maca_y, macaQnt, obstaculo_x);
   }, ATRASO);
@@ -167,6 +168,11 @@ function cicloDeJogo() {
   }
 }
 
+function htmlVidaChange() {
+  let vidaElement = document.querySelector(".vida--count");
+  vidaElement.textContent = vida.toString().padStart(2, "0");
+}
+
 function aoComerMaca(index) {
   macaAudio.play();
   pontos++;
@@ -178,6 +184,7 @@ function aoComerMaca(index) {
   if (countComidasPraVida === 3) {
     countComidasPraVida = 0;
     vida++;
+    htmlVidaChange();
   }
   if (ATRASO >= 90) ATRASO = 50;
 }
@@ -188,6 +195,7 @@ function macaDpsDeComerTd() {
 
 function aoColidirComObj(index) {
   vida--;
+  htmlVidaChange();
   obstaculoAudio.play();
   obstaculo_x[index] = macaInv;
   if (vida === 0) {

@@ -6,7 +6,13 @@
   </head>
 
   <body class="bodyClass">
-    <div class="cronometro"></div>
+    <div class="topBar">
+      <div class="cronometro"></div>
+      <div class="vida">
+        <img class="vida--img" src="./img/heart.png" alt="vidasImg" />
+        <div class="vida--count"></div>
+      </div>
+    </div>
     <canvas id="tela" width="900" height="900"></canvas>
     <script src="cobra.js"></script>
   </body>
@@ -35,17 +41,28 @@
       align-items: center;
       justify-items: center;
     }
-    .cronometro {
+    .topBar {
       font-family: "Press Start 2P", cursive;
       font-size: 32px;
-      display: grid;
-      text-align: center;
-      place-items: center;
+      display: flex;
       background-color: #b00020;
       border-radius: 10px 10px 0 0;
       width: 900px;
       height: 60px;
       color: #fff;
+      justify-content: center;
+      align-items: center;
+    }
+    .cronometro {
+      margin: 0 150px 0 273px;
+    }
+    .vida {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .vida--img {
+      width: 40px;
     }
   </style>
 </html>
