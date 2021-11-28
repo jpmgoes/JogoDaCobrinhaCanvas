@@ -13,13 +13,12 @@
         <div class="vida--count"></div>
       </div>
     </div>
-
-    <canvas id="tela" class="tela" width="900" height="900"></canvas>
-
+    <div class="canvas-box"></div>
     <script src="./script/ObjDoJogo.js"></script>
     <script src="./script/sort.js"></script>
     <script src="./script/verificacoes.js"></script>
     <script src="./script/canvasFn.js"></script>
+    <script src="./script/telaInicial.js"></script>
     <script src="./index.js"></script>
   </body>
 
@@ -33,6 +32,7 @@
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
       margin: 0;
+      font-family: "Press Start 2P", cursive;
     }
     body {
       display: -ms-grid;
@@ -41,14 +41,37 @@
       min-height: 100vh;
       min-width: 100vw;
       background-color: #31363e;
-
       align-content: center;
       justify-content: space-evenly;
       align-items: center;
       justify-items: center;
     }
+    .canvas-box {
+      background-color: #ef4626;
+      width: 900px;
+      height: 900px;
+    }
+    .canvas-box--inner {
+      height: 900px;
+      width: 900px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+    .btn {
+      cursor: pointer;
+      width: 200px;
+      height: 100px;
+      background-image: url("./img/btn-play.svg");
+      background-position: center;
+      background-color: rgba(255, 255, 255, 0);
+      border: none;
+      color: #fff;
+      font-size: 32px;
+    }
     .topBar {
-      font-family: "Press Start 2P", cursive;
       font-size: 32px;
       display: flex;
       background-color: #b00020;

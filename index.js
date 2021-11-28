@@ -51,6 +51,9 @@ if (!localStorage.getItem("players"))
 //alimento
 let countComidasPraVida = 0;
 let vida = 5;
+document.querySelector(".vida--count").textContent = `${vida
+  .toString()
+  .padStart(2, "0")}`;
 
 // start game config
 let randomStart = Math.round(Math.random() * 2) % 2;
@@ -68,4 +71,4 @@ const TECLA_ABAIXO = 40;
 
 onkeydown = verificarTecla; // Define função chamada ao se pressionar uma tecla
 
-iniciar();
+createTelaInicial();

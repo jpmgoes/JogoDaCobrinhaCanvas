@@ -1,8 +1,19 @@
+function putCanvasOnHtml() {
+  box.innerHTML = `<canvas id="tela" class="tela" width="900" height="900"></canvas>`;
+}
+
+function context() {
+  let tela = document.getElementById("tela");
+  let ctx = tela.getContext("2d");
+  return ctx;
+}
+
 function iniciar() {
+  putCanvasOnHtml();
   tela = document.getElementById("tela");
   ctx = tela.getContext("2d");
 
-  ctx.fillStyle = "#F24E1F";
+  ctx.fillStyle = "#ef4626";
   ctx.fillRect(0, 0, C_LARGURA, C_ALTURA);
 
   carregarImagens();
@@ -60,8 +71,9 @@ function addPlayer() {
   localStorage.setItem("players", JSON.stringify(players));
 }
 
-function fimDeJogo() {
-  addPlayer();
+function fimDeJogo(top5Btn = false) {
+  let ctx = context();
+
   let myFont = new FontFace("PressStart2P", "url(./font/pressstart2p.ttf)");
   myFont.load().then((font) => {
     document.fonts.add(font);
@@ -70,6 +82,14 @@ function fimDeJogo() {
     ctx.textAlign = "center";
     ctx.font = `normal bold 32px PressStart2P`;
 
+    if (top5Btn) {
+      new Audio("./audio/top5.mp3").play();
+      ctx.fillText("TOP 5 BEST PLAYERS 😎", centro.lado, centro.altura - 132);
+      setInterval(showPlayers, 7100);
+      return;
+    }
+
+    addPlayer();
     bgm.pause();
 
     if (!verificarQntdeComida()) {
@@ -91,6 +111,8 @@ function fimDeJogo() {
 }
 
 function showPlayers() {
+  let ctx = context();
+
   let countAltura = 64;
   let countTempo = 0;
 
