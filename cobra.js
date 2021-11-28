@@ -1,7 +1,7 @@
 // cronometro
 let countCronometro = {
-  min: 1,
-  sec: 20,
+  min: 0,
+  sec: 2,
 };
 let minFormatado = countCronometro.min.toString().padStart(2, "0");
 let secFormatado = countCronometro.sec.toString().padStart(2, "0");
@@ -269,7 +269,15 @@ function fazerDesenho() {
 }
 
 function addPlayer() {
-  let nome = prompt("Qual teu nome? bota só 3 letras ai 🙈🙈🙈").slice(0, 3);
+  let nome;
+  try {
+    nome = prompt("Qual teu nome? bota só 3 letras ai 🙈🙈🙈", "Ano").slice(
+      0,
+      3
+    );
+  } catch {
+    nome = "NoN"; // No Name
+  }
   players.nome.push(nome);
   players.ponto.push(pontos - 3);
   players.time.push(`${minFormatado}:${secFormatado}`);
@@ -342,16 +350,24 @@ function fimDeJogo() {
 
       countAltura += 64;
 
-      for (let index in players.ponto) {
-        let numIndex = +index;
-        let posicao = +index + 1;
+      for (let index = 0; index < 5; index++) {
+        const numIndex = +index;
+        const posicao = +index + 1;
+
+        const playersNome = players.nome[numIndex]
+          ? players.nome[numIndex].padStart(3, " ")
+          : "???";
+        let playersPonto = players.ponto[numIndex]
+          ? players.ponto[numIndex].toString().padStart(2, "0")
+          : "??";
+        if (playersNome !== "???" && playersPonto === "??") playersPonto = "00";
+        const playersTime = players.time[numIndex]
+          ? players.time[numIndex]
+          : "??:??";
 
         setTimeout(() => {
-          let name = players.nome[numIndex].padStart(3, " ");
           ctx.fillText(
-            `${posicao} ${name} ${players.ponto[numIndex]
-              .toString()
-              .padStart(2, "0")} ${players.time[numIndex]}`,
+            `${posicao} ${playersNome} ${playersPonto} ${playersTime}`,
             centro.lado,
             centro.altura + countAltura
           );
