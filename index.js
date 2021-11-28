@@ -2,16 +2,17 @@
 let tela;
 let ctx;
 let ATRASO = 120;
-const TAMANHO_PONTO = 30;
+const TAMANHO_PONTO = 21;
 const ALEATORIO_MAXIMO = 25;
-const C_ALTURA = 900;
+
+const C_ALTURA = 630;
 const C_LARGURA = C_ALTURA;
 const centro = {
   lado: C_LARGURA / 2,
   altura: C_ALTURA / 2,
 };
 
-let comida = new ObjDoJogo(15);
+let comida = new ObjDoJogo(1);
 comida.addNoJogo = addNoJogo;
 comida.objColision = objColision;
 let obstaculo = new ObjDoJogo(10, 2);

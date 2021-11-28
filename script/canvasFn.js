@@ -1,5 +1,5 @@
 function putCanvasOnHtml() {
-  box.innerHTML = `<canvas id="tela" class="tela" width="900" height="900"></canvas>`;
+  box.innerHTML = `<canvas id="tela" class="tela" width="630" height="630"></canvas>`;
 }
 
 function context() {
@@ -57,7 +57,7 @@ function fazerDesenho() {
 function addPlayer() {
   let nome;
   try {
-    nome = prompt("Qual teu nome? bota só 3 letras ai 🙈🙈🙈", "Ano").slice(
+    nome = prompt("Qual teu nome? bota só 3 letras ai \n(*>ω<*)", "Ano").slice(
       0,
       3
     );
@@ -84,7 +84,9 @@ function fimDeJogo(top5Btn = false) {
 
     if (top5Btn) {
       new Audio("./audio/top5.mp3").play();
-      ctx.fillText("TOP 5 BEST PLAYERS 😎", centro.lado, centro.altura - 132);
+      ctx.fillText("TOP 5", centro.lado, centro.altura - 164);
+      ctx.fillText("BEST PLAYERS", centro.lado, centro.altura - 100);
+      ctx.fillText("〈( ^.^)ノ", centro.lado, centro.altura - 36);
       setInterval(showPlayers, 7100);
       return;
     }
@@ -93,18 +95,21 @@ function fimDeJogo(top5Btn = false) {
     bgm.pause();
 
     if (!verificarQntdeComida()) {
-      ctx.fillText("DEU MOLE!! 😭😭💀💀", centro.lado, centro.altura - 132);
+      ctx.fillText("DEU MOLE!!", centro.lado, centro.altura - 132);
+      ctx.fillText("（=´∇｀=）", centro.lado, centro.altura - 68);
       gameOver.play();
       setInterval(showPlayers, 3800);
       return;
     }
 
     ctx.fillText(
-      `${cobra.qnt - 3} PONTOS???😳😳😳`,
+      `${cobra.qnt - 3} PONTOS???`,
       centro.lado,
-      centro.altura - 164
+      centro.altura - 240
     );
-    ctx.fillText("BRABO!!🥵🥵🥵", centro.lado, centro.altura - 100);
+    ctx.fillText("(*ﾟ∀ﾟ*)", centro.lado, centro.altura - 180);
+    ctx.fillText("BRABO!!", centro.lado, centro.altura - 120);
+    ctx.fillText("(≧∇≦)/", centro.lado, centro.altura - 64);
     wins.play();
     setInterval(showPlayers, 7600);
   });
@@ -113,7 +118,7 @@ function fimDeJogo(top5Btn = false) {
 function showPlayers() {
   let ctx = context();
 
-  let countAltura = 64;
+  let countAltura = 16;
   let countTempo = 0;
 
   ctx.fillText("NICK PT TIME", centro.lado, centro.altura + countAltura);
