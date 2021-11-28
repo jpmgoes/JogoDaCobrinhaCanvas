@@ -12,7 +12,7 @@ const centro = {
   altura: C_ALTURA / 2,
 };
 
-let comida = new ObjDoJogo(1);
+let comida = new ObjDoJogo(15);
 comida.addNoJogo = addNoJogo;
 comida.objColision = objColision;
 let obstaculo = new ObjDoJogo(10, 2);

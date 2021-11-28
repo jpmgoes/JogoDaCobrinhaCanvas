@@ -30,6 +30,7 @@ body {
   width: 630px;
   height: 630px;
   border-radius: 0 0 10px 10px;
+  outline: solid 5px white;
 }
 .canvas-box--inner {
   height: 630px;
@@ -61,6 +62,7 @@ body {
   color: #fff;
   justify-content: center;
   align-items: center;
+  outline: solid 5px white;
 }
 .cronometro {
   margin: 0 82px 0 205px;
