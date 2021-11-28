@@ -29,7 +29,9 @@ class ObjDoJogo {
 }
 
 let comida = new ObjDoJogo(15);
+comida.addNoJogo = addNoJogo;
 let obstaculo = new ObjDoJogo(10, 2);
+obstaculo.addNoJogo = addNoJogo;
 let cobra = new ObjDoJogo(3, 2);
 
 // cronometro
@@ -101,8 +103,8 @@ function iniciar() {
     bgm.loop = true;
     criarCobra();
     htmlVidaChange();
-    addNoJogo(obstaculo, obstaculo.qnt, comida.x);
-    addNoJogo(comida, comida.qnt, obstaculo.x);
+    obstaculo.addNoJogo(comida);
+    comida.addNoJogo(obstaculo);
   }, ATRASO);
 
   setTimeout("cicloDeJogo()", ATRASO);
@@ -132,26 +134,25 @@ function criarCobra() {
   }
 }
 
-function addNoJogo(obj, qnt, ...arrColision) {
-  for (let i = 0; i < qnt; i++) {
-    while (!obj.x[i] || obj.y[i] === cobra.x[0]) {
+function addNoJogo(...arrColision) {
+  for (let i = 0; i < this.qnt; i++) {
+    while (!this.x[i] || this.y[i] === cobra.x[0]) {
       // garantir que vai pegar todos os valores e nao vai ser na mesma linha da cobra
       while (true) {
         // evitar mesma posicao
         const r = Math.floor(Math.random() * ALEATORIO_MAXIMO);
         const value = r * TAMANHO_PONTO;
 
-        if (!obj.x.find((a) => a === value)) {
+        if (!this.x.find((a) => a === value)) {
           for (let arr of arrColision)
-            if (!arr.find((a) => a === value)) obj.x[i] = value;
+            if (!arr.x.find((a) => a === value)) this.x[i] = value;
         } else break;
       }
       const r = Math.floor(Math.random() * ALEATORIO_MAXIMO);
-      obj.y[i] = r * TAMANHO_PONTO;
-      if (obj.x.length === qnt) break;
+      this.y[i] = r * TAMANHO_PONTO;
+      if (this.x.length === this.qnt) break;
     }
   }
-  return [obj.x, obj.y];
 }
 
 function cicloDeJogo() {
