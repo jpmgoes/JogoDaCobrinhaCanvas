@@ -282,9 +282,9 @@ function sortBest5players() {
     for (let j = +i + 1; j < players.ponto.length; j++) {
       if (j >= players.ponto.length) break;
       if (players.ponto[j] > players.ponto[i]) {
-        trocaTroca(players.ponto, i, j);
-        trocaTroca(players.nome, i, j);
-        trocaTroca(players.time, i, j);
+        permuta(players.ponto, i, j);
+        permuta(players.nome, i, j);
+        permuta(players.time, i, j);
       }
     }
   return {
@@ -294,7 +294,7 @@ function sortBest5players() {
   };
 }
 
-function trocaTroca(arr, indexI, indexJ) {
+function permuta(arr, indexI, indexJ) {
   let aux = arr[indexJ];
   arr[indexJ] = arr[indexI];
   arr[indexI] = aux;
@@ -307,10 +307,7 @@ function fimDeJogo() {
     altura: C_ALTURA / 2,
   };
 
-  let myFont = new FontFace(
-    "PressStart2P",
-    "url(http://fonts.gstatic.com/s/pressstart2p/v5/8Lg6LX8-ntOHUQnvQ0E7o3uGXJk6cuEylToZ-uuaubQ.ttf)"
-  );
+  let myFont = new FontFace("PressStart2P", "url(./font/pressstart2p.ttf)");
 
   myFont.load().then((font) => {
     document.fonts.add(font);
