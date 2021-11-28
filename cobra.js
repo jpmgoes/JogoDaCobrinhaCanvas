@@ -26,9 +26,6 @@ class AddNoJogo {
       this.img[+i].src = `./img/${imgName}${+i + 1}.${type}`;
     });
   }
-  fazerDesenho(cb) {
-    cb();
-  }
 }
 
 let comida = new AddNoJogo(15);
@@ -278,8 +275,7 @@ function fazerDesenho() {
       else ctx.drawImage(cobra.img[1], cobra.x[i], cobra.y[i]);
     };
 
-    for (let obj of objNoJogo)
-      for (let i = 0; i < obj.qnt; i++) obj.fazerDesenho(() => obj.fn(i));
+    for (let obj of objNoJogo) for (let i = 0; i < obj.qnt; i++) obj.fn(i);
   }
 }
 
