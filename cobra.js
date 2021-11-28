@@ -33,6 +33,7 @@ comida.addNoJogo = addNoJogo;
 let obstaculo = new ObjDoJogo(10, 2);
 obstaculo.addNoJogo = addNoJogo;
 let cobra = new ObjDoJogo(3, 2);
+cobra.addNoJogo = criarCobra;
 
 // cronometro
 let countCronometro = {
@@ -101,7 +102,7 @@ function iniciar() {
   setTimeout(() => {
     bgm.play();
     bgm.loop = true;
-    criarCobra();
+    cobra.addNoJogo();
     htmlVidaChange();
     obstaculo.addNoJogo(comida);
     comida.addNoJogo(obstaculo);
@@ -128,9 +129,9 @@ function criarCobra() {
   const posAleatoria = Math.random() * C_LARGURA - TAMANHO_PONTO;
   const a = posAleatoria - (posAleatoria % TAMANHO_PONTO);
 
-  for (var z = 0; z < cobra.qnt; z++) {
-    cobra.x[z] = a - z * TAMANHO_PONTO;
-    cobra.y[z] = a;
+  for (var i = 0; i < this.qnt; i++) {
+    this.x[i] = a - i * TAMANHO_PONTO;
+    this.y[i] = a;
   }
 }
 
