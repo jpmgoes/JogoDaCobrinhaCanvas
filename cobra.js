@@ -11,7 +11,7 @@ const centro = {
   altura: C_ALTURA / 2,
 };
 
-class AddNoJogo {
+class ObjDoJogo {
   constructor(qnt = 0, imgQnt = 1) {
     this.img = Array(imgQnt).fill(null);
     this.audio = null;
@@ -28,9 +28,9 @@ class AddNoJogo {
   }
 }
 
-let comida = new AddNoJogo(15);
-let obstaculo = new AddNoJogo(10, 2);
-let cobra = new AddNoJogo(3, 2);
+let comida = new ObjDoJogo(15);
+let obstaculo = new ObjDoJogo(10, 2);
+let cobra = new ObjDoJogo(3, 2);
 
 // cronometro
 let countCronometro = {
