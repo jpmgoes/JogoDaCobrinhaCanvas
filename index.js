@@ -12,18 +12,18 @@ const centro = {
   altura: C_ALTURA / 2,
 };
 
-let comida = new ObjDoJogo(15);
+const comida = new ObjDoJogo(15);
 comida.addNoJogo = addNoJogo;
 comida.objColision = objColision;
-let obstaculo = new ObjDoJogo(10, 2);
+const obstaculo = new ObjDoJogo(10, 2);
 obstaculo.addNoJogo = addNoJogo;
 obstaculo.objColision = objColision;
 
-let cobra = new ObjDoJogo(3, 2);
+const cobra = new ObjDoJogo(3, 2);
 cobra.addNoJogo = criarCobra;
 
 // cronometro
-let countCronometro = {
+const countCronometro = {
   min: 1,
   sec: 20,
 };
@@ -32,6 +32,7 @@ let secFormatado = countCronometro.sec.toString().padStart(2, "0");
 document.querySelector(
   ".cronometro"
 ).textContent = `${minFormatado}:${secFormatado}`;
+let cronometroIsNotOver = true;
 
 // audio
 let bgm;
@@ -49,7 +50,7 @@ let players = localStorage.getItem("players")
 if (!localStorage.getItem("players"))
   localStorage.setItem("players", JSON.stringify(players));
 
-//alimento
+// vida
 let countComidasPraVida = 0;
 let vida = 5;
 document.querySelector(".vida--count").textContent = `${vida

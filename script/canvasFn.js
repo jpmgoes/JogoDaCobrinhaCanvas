@@ -156,10 +156,7 @@ function showPlayers() {
 function cronometroScreen() {
   let element = document.querySelector(".cronometro");
   let countFn = setInterval(() => {
-    if (noJogo) {
-      cronometro();
-    } else {
-    }
+    if (noJogo) cronometro();
 
     minFormatado = countCronometro.min.toString().padStart(2, "0");
     secFormatado = countCronometro.sec.toString().padStart(2, "0");
@@ -172,24 +169,27 @@ function cronometroScreen() {
     if (countCronometro.sec < 0) {
       countCronometro.sec = 59;
       if (countCronometro.min <= 0) {
-        noJogo = false;
-        ctx.clearRect(0, 0, C_LARGURA, C_ALTURA);
-        ctx.fillRect(0, 0, C_LARGURA, C_ALTURA);
-        fimDeJogo();
         countCronometro.min = 0;
         countCronometro.sec = 0;
+        clearCanvas();
+        noJogo = false;
+        cronometroIsNotOver = false;
         clearInterval(countFn);
       } else countCronometro.min--;
     }
   }
 }
 
+function clearCanvas() {
+  ctx.clearRect(0, 0, C_LARGURA, C_ALTURA);
+  ctx.fillRect(0, 0, C_LARGURA, C_ALTURA);
+}
+
 function cicloDeJogo() {
-  if (noJogo) {
+  if (noJogo && cronometroIsNotOver) {
     verificarColisao();
     mover();
-    ctx.clearRect(0, 0, C_LARGURA, C_ALTURA);
-    ctx.fillRect(0, 0, C_LARGURA, C_ALTURA);
+    clearCanvas();
     fazerDesenho();
     setTimeout("cicloDeJogo()", ATRASO);
   } else fimDeJogo();
