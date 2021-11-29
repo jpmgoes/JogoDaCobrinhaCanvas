@@ -58,11 +58,25 @@ document.querySelector(".vida--count").textContent = `${vida
   .padStart(2, "0")}`;
 
 // start game config
-let randomStart = Math.round(Math.random() * 2) % 2;
-let paraEsquerda = randomStart ? 1 : 0;
-let paraDireita = randomStart ? 0 : 1;
-let paraCima = false;
-let paraBaixo = false;
+let paraEsquerda;
+let paraDireita;
+let paraCima;
+let paraBaixo;
+
+let isHorizontal = Math.round(Math.random() * 2) % 2;
+const randomStart = Math.round(Math.random() * 2) % 2;
+
+if (isHorizontal) {
+  paraEsquerda = randomStart ? 1 : 0;
+  paraDireita = randomStart ? 0 : 1;
+  paraCima = 0;
+  paraBaixo = 0;
+} else {
+  paraEsquerda = 0;
+  paraDireita = 0;
+  paraCima = randomStart ? 1 : 0;
+  paraBaixo = randomStart ? 0 : 1;
+}
 let noJogo = true;
 
 // move
