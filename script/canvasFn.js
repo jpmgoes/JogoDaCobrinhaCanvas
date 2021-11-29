@@ -166,9 +166,9 @@ function cronometroScreen() {
 
   function cronometro() {
     countCronometro.sec--;
-    if (countCronometro.sec <= 0) {
+    if (countCronometro.sec < 0) {
       countCronometro.sec = 59;
-      if (countCronometro.min <= 0) {
+      if (countCronometro.min < 0) {
         countCronometro.min = 0;
         countCronometro.sec = 0;
         clearCanvas();
