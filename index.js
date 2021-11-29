@@ -24,8 +24,8 @@ cobra.addNoJogo = criarCobra;
 
 // cronometro
 const countCronometro = {
-  min: 2,
-  sec: 5,
+  min: 1,
+  sec: 20,
 };
 let minFormatado = countCronometro.min.toString().padStart(2, "0");
 let secFormatado = countCronometro.sec.toString().padStart(2, "0");
